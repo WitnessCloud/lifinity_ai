@@ -41,7 +41,7 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 gem 'sprockets', '~> 4.0.0'
-gem 'sprockets-rails', '~> 3.4.2'
+gem 'sprockets-rails', '~> 3.5.2'
 gem "pg"
 gem "devise"
 gem "sassc-rails"
