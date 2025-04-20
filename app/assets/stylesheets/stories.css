@@ -1,0 +1,317 @@
+/* 用户故事列表样式 */
+
+/* 容器样式 */
+.stories-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+}
+
+.stories-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 过滤按钮 */
+.stories-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.stories-filter .filter-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.stories-filter .filter-btn:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4a6bfa;
+    transition: all 0.3s ease;
+}
+
+.stories-filter .filter-btn:hover,
+.stories-filter .filter-btn.active {
+    color: #4a6bfa;
+}
+
+.stories-filter .filter-btn:hover:after,
+.stories-filter .filter-btn.active:after {
+    width: 100%;
+}
+
+/* 故事网格 */
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* 故事卡片 */
+.story-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.story-card .story-image {
+    height: 180px;
+    overflow: hidden;
+}
+
+.story-card .story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.story-card .placeholder-image {
+    width: 100%;
+    height: 100%;
+    background-color: #f5f7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #4a6bfa;
+}
+
+.story-card:hover .story-image img {
+    transform: scale(1.05);
+}
+
+.story-card .story-content {
+    padding: 1.5rem;
+}
+
+.story-card .story-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.story-card .story-excerpt {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    height: 4.5em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.story-card .story-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.story-card .story-date {
+    color: #999;
+}
+
+.story-card .story-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+.story-card .story-status.published {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.story-card .story-status.draft {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #d39e00;
+}
+
+.story-card .story-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.story-card .btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    flex: 1;
+    margin: 0 0.25rem;
+    text-decoration: none;
+}
+
+.story-card .btn.btn-view {
+    background-color: #f5f7ff;
+    color: #4a6bfa;
+    border: 1px solid #4a6bfa;
+}
+
+.story-card .btn.btn-view:hover {
+    background-color: #4a6bfa;
+    color: white;
+}
+
+.story-card .btn.btn-edit {
+    background-color: #f2f2f2;
+    color: #333;
+    border: 1px solid #e0e0e0;
+}
+
+.story-card .btn.btn-edit:hover {
+    background-color: #e0e0e0;
+}
+
+.story-card .btn.btn-delete {
+    background-color: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.story-card .btn.btn-delete:hover {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: #f5f7ff;
+    border-radius: 10px;
+}
+
+.empty-state .empty-icon {
+    font-size: 4rem;
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #777;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state .btn-primary {
+    background-color: #4a6bfa;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.empty-state .btn-primary:hover {
+    background-color: #3a5bd9;
+}
+
+/* 创建故事按钮 */
+.create-story-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #4a6bfa;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 100;
+    text-decoration: none;
+}
+
+.create-story-btn:hover {
+    transform: scale(1.1);
+    background-color: #3a5bd9;
+}
+
+.create-story-btn.animate-click {
+    animation: pulse 0.3s ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .story-card .story-actions {
+        flex-direction: column;
+    }
+
+    .story-card .btn {
+        margin: 0.25rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .stories-container {
+        padding: 1rem;
+    }
+
+    .stories-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stories-filter .filter-btn {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}

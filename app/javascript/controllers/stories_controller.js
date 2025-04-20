@@ -1,4 +1,3 @@
-// 用户故事列表的Stimulus控制器
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
