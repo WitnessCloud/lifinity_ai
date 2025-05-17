@@ -40,7 +40,7 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'sprockets', '~> 4.0.0'
+gem 'sprockets', '~> 4.2.2'
 gem 'sprockets-rails', '~> 3.4.2'
 gem "pg"
 gem "devise"
