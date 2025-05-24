@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星際文章閱讀器 | Web3.0 News</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .article-container {
+            padding: 40px;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .meta-icon {
+            width: 20px;
+            height: 20px;
+            fill: #4facfe;
+        }
+
+        .article-title {
+            font-size: 2.2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .article-content {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+        }
+
+        .article-content ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+        }
+
+        .ipfs-info {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .ipfs-info h3 {
+            color: #e91e63;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ipfs-details {
+            display: grid;
+            gap: 12px;
+        }
+
+        .ipfs-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+
+        .hash-display {
+            background: rgba(255,255,255,0.8);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85em;
+            word-break: break-all;
+            color: #666;
+            border: 1px solid rgba(233, 30, 99, 0.2);
+        }
+
+        .access-links {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .access-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #666;
+            transition: all 0.3s;
+            border: 1px solid rgba(233, 30, 99, 0.2);
+        }
+
+        .access-link:hover {
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .web3-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .article-container {
+                padding: 25px;
+            }
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .article-title {
+                font-size: 1.8em;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+            border-left: 5px solid #d63031;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌌 星際文章閱讀器</h1>
+            <p class="subtitle">Web3.0 去中心化新聞網絡</p>
+        </div>
+
+        <div id="content" class="article-container">
+            <div class="loading">
+                <p>🚀 正在從星際網路載入文章...</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>基於 IPFS 的去中心化內容系統</p>
+            <p>🌍 全球訪問 • 🔒 永久存取 • 🛡️ 抗審查</p>
+            <div class="web3-badge">
+                <span>🌟</span>
+                <span>Web3.0 技術核心</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sampleArticle = {
+            "title": "我的第一篇 IPFS 文章",
+            "content": "這是我存取在星際網絡中的第一篇文章！\n\n特點：\n- 永久存取\n- 無法删除\n- 全球訪問\n\n！🚀",
+            "author": "IPFS 新手",
+            "tags": ["IPFS", "Test", "第一篇文章"],
+            "created_at": "2025-05-24T12:42:22Z",
+            "version": "1.0",
+            "type": "stellar_article"
+        };
+
+        const ipfsHash = "QmWc3AHyGGPS32YwTdEefHpAN1cNed7SzCwjNScPSdqqdQ";
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('zh-TW', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatContent(content) {
+            return content
+                .split('\n\n')
+                .map(paragraph => {
+                    if (paragraph.includes('- ')) {
+                        const items = paragraph.split('\n').filter(line => line.trim());
+                        const listItems = items.map(item => {
+                            if (item.startsWith('- ')) {
+                                return `<li>${item.substring(2)}</li>`;
+                            } else {
+                                return item;
+                            }
+                        });
+
+                        const nonListItems = listItems.filter(item => !item.startsWith('<li>'));
+                        const listItemsOnly = listItems.filter(item => item.startsWith('<li>'));
+
+                        let result = '';
+                        if (nonListItems.length > 0) {
+                            result += `<p>${nonListItems.join('<br>')}</p>`;
+                        }
+                        if (listItemsOnly.length > 0) {
+                            result += `<ul>${listItemsOnly.join('')}</ul>`;
+                        }
+                        return result;
+                    } else {
+                        return `<p>${paragraph.replace(/\n/g, '<br>')}</p>`;
+                    }
+                })
+                .join('');
+        }
+
+        function renderArticle(article, hash) {
+            const contentDiv = document.getElementById('content');
+
+            contentDiv.innerHTML = `
+                <div class="article-meta">
+                    <div class="meta-item">
+                        <svg class="meta-icon" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <span><strong>發文者:</strong> ${article.author}</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="meta-icon" viewBox="0 0 24 24">
+                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                        </svg>
+                        <span><strong>發佈時間:</strong> ${formatDate(article.created_at)}</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="meta-icon" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span><strong>版本:</strong> ${article.version}</span>
+                    </div>
+                </div>
+
+                <h1 class="article-title">${article.title}</h1>
+
+                <div class="tags">
+                    ${article.tags.map(tag => `<span class="tag"># ${tag}</span>`).join('')}
+                </div>
+
+                <div class="article-content">
+                    ${formatContent(article.content)}
+                </div>
+
+                <div class="ipfs-info">
+                    <h3>
+                        <span>🌌</span>
+                        IPFS 星際網絡文章
+                    </h3>
+                    <div class="ipfs-details">
+                        <div class="ipfs-detail">
+                            <strong>Hash:</strong>
+                        </div>
+                        <div class="hash-display">${hash}</div>
+
+                        <div class="ipfs-detail">
+                            <strong>🌍 全球訪問連接:</strong>
+                        </div>
+                    </div>
+
+                    <div class="access-links">
+                        <a href="https://ipfs.io/ipfs/${hash}" target="_blank" class="access-link">
+                            <span>🌐</span>
+                            <span>IPFS.io 官方</span>
+                        </a>
+                        <a href="https://cloudflare-ipfs.com/ipfs/${hash}" target="_blank" class="access-link">
+                            <span>⚡</span>
+                            <span>Cloudflare IPFS 網關</span>
+                        </a>
+                        <a href="https://gateway.pinata.cloud/ipfs/${hash}" target="_blank" class="access-link">
+                            <span>📌</span>
+                            <span>Pinata 網關</span>
+                        </a>
+                        <a href="http://localhost:8080/ipfs/${hash}" target="_blank" class="access-link">
+                            <span>🏠</span>
+                            <span>local IPFS 節點</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                renderArticle(sampleArticle, ipfsHash);
+            }, 1000);
+        });
+
+        function getIPFSHashFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('hash');
+        }
+
+        async function loadArticleFromIPFS(hash) {
+            try {
+                const response = await fetch(`http://localhost:8080/ipfs/${hash}`);
+                if (!response.ok) {
+                    throw new Error('網路請求失敗');
+                }
+                const articleData = await response.json();
+                renderArticle(articleData, hash);
+            } catch (error) {
+                document.getElementById('content').innerHTML = `
+                    <div class="error">
+                        <h3>❌ 載入失敗</h3>
+                        <p>無法從 IPFS 網路載入文章: ${error.message}</p>
+                        <p>請確認 IPFS 節點正在運行，或嘗試其他網關。</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
