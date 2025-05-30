@@ -18,18 +18,17 @@ module Ipfs
       @base_url = "http://#{@host}:#{@port}/api/v0"
 
       check_connection!
-      puts "✅ 成功连接到 IPFS 节点"
     end
 
     def check_connection!
       begin
         response = http_post('/version')
         version_info = JSON.parse(response.body)
-        puts "IPFS 版本: #{version_info['Version']}"
+
+        Rails.logger.info(version_info['Version'])
       rescue => e
-        puts "❌ 无法连接到 IPFS 节点: #{e.message}"
-        puts "请确保 IPFS 守护进程正在运行: ipfs daemon"
-        raise "IPFS 连接失败"
+        Rails.logger.error(e.message)
+        raise "IPFS link error"
       end
     end
 

@@ -1,151 +1,96 @@
-<header>
-    <div class="header-container">
-        <div class="logo">Web3 - Lifinity</div>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav>
-            <ul>
+ <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Web3 - Lifinity</a>
+
+            <!-- 桌面版選單 -->
+            <ul class="nav-menu">
                 <li><a href="#">首頁</a></li>
                 <li><a href="#">關於我</a></li>
-                <li class="dropdown">
-                    <a href="#">全地</a>
-                    <div class="dropdown-content">
-                        <a href="#">宣教的禾場</a>
-                        <!-- <a href="#">Service 2</a>
-                        <a href="#">Service 3</a> -->
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#">光和鹽</a>
-                    <div class="dropdown-content">
-                        <a href="#">你的故事</a>
-                        <!-- <a href="#"></a>
-                        <a href="#"></a> -->
-                    </div>
-                </li>
-                <li><a href="#">聯繫我們</a></li>
+                <li><a href="#">宣教的禾場</a></li>
+                <li><a href="#">光和盤</a></li>
             </ul>
-        </nav>
-    </div>
-</header>
-<div class="overlay"></div>
 
-<main>
-    <div style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
-        <h3>一個走遍世界愛與良善的橋樑.</h3>
-        <p style="margin-top: 1rem;"></p>
-    </div>
-</main>
+            <!-- 漢堡選單按鈕 -->
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
 
-<!-- 用户故事列表页面 -->
-<div class="stories-container" data-controller="stories">
-  <h1 class="stories-title">你的故事</h1>
+        <!-- 手機版選單 -->
+        <div class="mobile-menu" id="mobileMenu">
+            <ul>
+                <li><a href="#" onclick="closeMenu()">首頁</a></li>
+                <li><a href="#" onclick="closeMenu()">關於我</a></li>
+                <li><a href="#" onclick="closeMenu()">宣教的禾場</a></li>
+                <li><a href="#" onclick="closeMenu()">光和盤</a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <div class="stories-filter" data-stories-target="filter">
-    <button class="filter-btn active" data-action="click->stories#filterAll">全部</button>
-    <button class="filter-btn" data-action="click->stories#filterPublished">已發布</button>
-    <button class="filter-btn" data-action="click->stories#filterDrafts">草稿</button>
-  </div>
+    <!-- 主要內容 -->
+    <main class="main-content">
+        <p class="hero-text">一個走遍世界愛與良善的橋樑。</p>
 
-  <div class="stories-grid" data-stories-target="storiesGrid">
-    <!-- 故事卡片示例 - 已发布 -->
-    <div class="story-card" data-stories-target="storyCard" data-status="published">
-      <div class="story-image">
-        <img src="https://via.placeholder.com/300x180" alt="故事封面">
-      </div>
-      <div class="story-content">
-        <h3 class="story-title">我的第一个故事</h3>
-        <p class="story-excerpt">这是一个关于冒险的故事，主人公踏上了一段奇妙的旅程，遇到了许多有趣的人和事...</p>
-        <div class="story-meta">
-          <span class="story-date">2025-04-15</span>
-          <span class="story-status published">已发布</span>
-        </div>
-        <div class="story-actions">
-          <a href="#" class="btn btn-view">查看</a>
-          <a href="#" class="btn btn-edit">编辑</a>
-          <button class="btn btn-delete" data-action="click->stories#confirmDelete">删除</button>
-        </div>
-      </div>
-    </div>
+        <h1 class="section-title">你的故事</h1>
 
-    <!-- 故事卡片示例 - 草稿 -->
-    <div class="story-card" data-stories-target="storyCard" data-status="draft">
-      <div class="story-image">
-        <div class="placeholder-image">
-          <i class="fa fa-book"></i>
+        <div class="tabs">
+            <a href="#" class="tab active">全部</a>
+            <a href="#" class="tab">已發布</a>
+            <a href="#" class="tab">草稿</a>
         </div>
-      </div>
-      <div class="story-content">
-        <h3 class="story-title">未完成的旅程</h3>
-        <p class="story-excerpt">这个故事还在构思中，主要讲述了一个年轻人在城市中寻找自我的过程，充满了思考和感悟...</p>
-        <div class="story-meta">
-          <span class="story-date">2025-04-18</span>
-          <span class="story-status draft">草稿</span>
-        </div>
-        <div class="story-actions">
-          <a href="#" class="btn btn-view">查看</a>
-          <a href="#" class="btn btn-edit">编辑</a>
-          <button class="btn btn-delete" data-action="click->stories#confirmDelete">删除</button>
-        </div>
-      </div>
-    </div>
+    </main>
 
-    <!-- 再添加一个已发布的故事卡片 -->
-    <div class="story-card" data-stories-target="storyCard" data-status="published">
-      <div class="story-image">
-        <img src="https://via.placeholder.com/300x180" alt="故事封面">
-      </div>
-      <div class="story-content">
-        <h3 class="story-title">城市的记忆</h3>
-        <p class="story-excerpt">这座城市有太多故事，每个角落都藏着回忆，街道、建筑、行人，都是这个大叙事的一部分...</p>
-        <div class="story-meta">
-          <span class="story-date">2025-04-10</span>
-          <span class="story-status published">已发布</span>
-        </div>
-        <div class="story-actions">
-          <a href="#" class="btn btn-view">查看</a>
-          <a href="#" class="btn btn-edit">编辑</a>
-          <button class="btn btn-delete" data-action="click->stories#confirmDelete">删除</button>
-        </div>
-      </div>
-    </div>
+    <script>
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
 
-    <!-- 再添加一个草稿故事卡片 -->
-    <div class="story-card" data-stories-target="storyCard" data-status="draft">
-      <div class="story-image">
-        <div class="placeholder-image">
-          <i class="fa fa-book"></i>
-        </div>
-      </div>
-      <div class="story-content">
-        <h3 class="story-title">科技与未来</h3>
-        <p class="story-excerpt">这是一篇关于科技如何改变我们生活的思考，从智能手机到人工智能，我们的世界正在发生翻天覆地的变化...</p>
-        <div class="story-meta">
-          <span class="story-date">2025-04-05</span>
-          <span class="story-status draft">草稿</span>
-        </div>
-        <div class="story-actions">
-          <a href="#" class="btn btn-view">查看</a>
-          <a href="#" class="btn btn-edit">编辑</a>
-          <button class="btn btn-delete" data-action="click->stories#confirmDelete">删除</button>
-        </div>
-      </div>
-    </div>
-  </div>
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        }
 
-  <div class="empty-state" data-stories-target="emptyState" style="display:none;">
-    <div class="empty-icon">
-      <i class="fa fa-file-alt"></i>
-    </div>
-    <h3>暂无故事</h3>
-    <p>您还没有创建任何故事，点击下方按钮开始创作吧！</p>
-    <a href="#" class="btn-primary">创建新故事</a>
-  </div>
+        function closeMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
 
-  <a href="#" class="create-story-btn" data-action="click->stories#animateButton">
-    <i class="fa fa-plus"></i>
-  </a>
-</div>
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        }
+
+        // 點擊頁面其他地方關閉選單
+        document.addEventListener('click', function(event) {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (!hamburger.contains(event.target) && !mobileMenu.contains(event.target)) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // 標籤切換功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // 移除所有 active 類別
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+                // 添加 active 類別到點擊的標籤
+                this.classList.add('active');
+            });
+        });
+
+        // 處理視窗大小變化
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const hamburger = document.querySelector('.hamburger');
+                const mobileMenu = document.getElementById('mobileMenu');
+
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+    </script>
