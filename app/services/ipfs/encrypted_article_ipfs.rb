@@ -12,14 +12,14 @@ module Ipfs
 
       if @ipfs.connected?
         puts "✅ IPFS 連接正常"
-        return true
+        true
       else
         puts "❌ IPFS 連接失敗"
         puts "請確認："
         puts "1. IPFS 已安裝"
         puts "2. IPFS daemon 正在運行"
         puts "3. API 在 localhost:5001 可用"
-        return false
+        false
       end
     end
 
@@ -57,7 +57,7 @@ module Ipfs
 
       # 上傳到 IPFS
       result = @ipfs.add_json(article_package)
-      ipfs_hash = result['Hash']
+      ipfs_hash = result["Hash"]
 
       puts "✅ 文章已上傳到 IPFS"
       puts "IPFS Hash: #{ipfs_hash}"
@@ -65,7 +65,7 @@ module Ipfs
       {
         title: title,
         ipfs_hash: ipfs_hash,
-        size: result['Size'],
+        size: result["Size"],
         encrypted: true,
         has_password: !password.nil?
       }

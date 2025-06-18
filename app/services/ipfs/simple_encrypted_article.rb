@@ -1,14 +1,14 @@
-require 'net/http'
-require 'uri'
-require 'json'
-require 'tempfile'
-require 'openssl'
-require 'base64'
+require "net/http"
+require "uri"
+require "json"
+require "tempfile"
+require "openssl"
+require "base64"
 
 # 簡化版的加密文章類別
 module Ipfs
   class SimpleEncryptedArticle
-    ALGORITHM = 'AES-256-GCM'
+    ALGORITHM = "AES-256-GCM"
 
     def initialize
       @cipher = OpenSSL::Cipher.new(ALGORITHM)
@@ -44,7 +44,7 @@ module Ipfs
 
     private
 
-    def derive_key_from_password(password, salt = 'stable_salt')
+    def derive_key_from_password(password, salt = "stable_salt")
       OpenSSL::PKCS5.pbkdf2_hmac(password, salt, 10000, 32, OpenSSL::Digest::SHA256.new)
     end
   end

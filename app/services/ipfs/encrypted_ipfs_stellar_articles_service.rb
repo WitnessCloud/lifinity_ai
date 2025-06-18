@@ -1,18 +1,18 @@
 module Ipfs
   class EncryptedIpfsStellarArticlesService
-    require 'net/http'
-    require 'uri'
-    require 'json'
-    require 'fileutils'
-    require 'digest'
-    require 'time'
-    require 'openssl'
-    require 'base64'
+    require "net/http"
+    require "uri"
+    require "json"
+    require "fileutils"
+    require "digest"
+    require "time"
+    require "openssl"
+    require "base64"
 
-    IPFS_API_HOST = 'localhost'
+    IPFS_API_HOST = "localhost"
     IPFS_API_PORT = 5001
-    IPFS_GATEWAY = 'http://localhost:8080'
-    ALGORITHM = 'AES-256-GCM'
+    IPFS_GATEWAY = "http://localhost:8080"
+    ALGORITHM = "AES-256-GCM"
 
     def initialize(host: IPFS_API_HOST, port: IPFS_API_PORT, gateway: IPFS_GATEWAY)
       @host = host
@@ -26,7 +26,7 @@ module Ipfs
 
     def check_connection!
       begin
-        response = http_post('/version')
+        response = http_post("/version")
         version_info = JSON.parse(response.body)
         Rails.logger.info("IPFS Version: #{version_info['Version']}")
         puts "✅ IPFS 連接成功，版本: #{version_info['Version']}"
@@ -113,20 +113,20 @@ module Ipfs
         article_data = JSON.parse(content)
 
         # 檢查是否為加密文章
-        if article_data['encrypted_data']
+        if article_data["encrypted_data"]
           puts "🔓 檢測到加密文章，正在解密..."
 
           unless password
             puts "❌ 此文章需要密碼才能解密"
             return {
               error: "需要密碼",
-              metadata: article_data['metadata'],
+              metadata: article_data["metadata"],
               encrypted: true
             }
           end
 
           # 解密文章
-          encrypted_data = symbolize_keys(article_data['encrypted_data'])
+          encrypted_data = symbolize_keys(article_data["encrypted_data"])
           decrypted_content = decrypt_content(encrypted_data, password)
           original_article = JSON.parse(decrypted_content)
 
@@ -138,12 +138,12 @@ module Ipfs
 
           # 合併 metadata 和解密的內容
           result = original_article.merge({
-            'hash' => hash,
-            'encrypted' => true,
-            'gateway_url' => "#{@gateway}/ipfs/#{hash}"
+            "hash" => hash,
+            "encrypted" => true,
+            "gateway_url" => "#{@gateway}/ipfs/#{hash}"
           })
 
-          return result
+          result
 
         else
           # 未加密文章
@@ -153,22 +153,22 @@ module Ipfs
           puts "創建時間: #{article_data['created_at']}"
           puts "標籤: #{article_data['tags']&.join(', ')}"
 
-          article_data['hash'] = hash
-          article_data['encrypted'] = false
-          article_data['gateway_url'] = "#{@gateway}/ipfs/#{hash}"
+          article_data["hash"] = hash
+          article_data["encrypted"] = false
+          article_data["gateway_url"] = "#{@gateway}/ipfs/#{hash}"
 
-          return article_data
+          article_data
         end
 
       rescue JSON::ParserError => e
         puts "❌ 解析文章資料失敗: #{e.message}"
-        return { error: "資料格式錯誤", message: e.message }
+        { error: "資料格式錯誤", message: e.message }
       rescue OpenSSL::Cipher::CipherError => e
         puts "❌ 解密失敗，可能是密碼錯誤: #{e.message}"
-        return { error: "解密失敗", message: "密碼可能不正確" }
+        { error: "解密失敗", message: "密碼可能不正確" }
       rescue => e
         puts "❌ 獲取文章失敗: #{e.message}"
-        return { error: "獲取失敗", message: e.message }
+        { error: "獲取失敗", message: e.message }
       end
     end
 
@@ -194,7 +194,7 @@ module Ipfs
         title: "IPFS 入門指南",
         content: "IPFS (InterPlanetary File System) 是一個分散式的檔案系統，旨在創建一個持久且分散的儲存和分享檔案的方法。",
         author: "技術專家",
-        tags: ["IPFS", "技術", "入門"]
+        tags: [ "IPFS", "技術", "入門" ]
       )
       articles << result1
 
@@ -203,7 +203,7 @@ module Ipfs
         title: "我的私密日記",
         content: "今天學會了如何在 IPFS 上創建加密文章，這真是太酷了！現在我的文章可以安全地存儲在分散式網路上。",
         author: "日記作者",
-        tags: ["日記", "私密", "學習"],
+        tags: [ "日記", "私密", "學習" ],
         password: "my_secret_123"
       )
       articles << result2
@@ -213,7 +213,7 @@ module Ipfs
         title: "區塊鏈技術深度分析",
         content: "這是一份關於區塊鏈技術的深度分析報告，包含了最新的技術趨勢和市場分析。內容僅供內部參考。",
         author: "研究員",
-        tags: ["區塊鏈", "分析", "機密"],
+        tags: [ "區塊鏈", "分析", "機密" ],
         password: "blockchain_2024"
       )
       articles << result3
@@ -235,8 +235,8 @@ module Ipfs
     # 取消固定內容
     def unpin_content(hash)
       begin
-        params = { 'arg' => hash }
-        response = http_post('/pin/rm', params)
+        params = { "arg" => hash }
+        response = http_post("/pin/rm", params)
         puts "📌 已從本地節點取消固定: #{hash}"
         true
       rescue => e
@@ -248,12 +248,12 @@ module Ipfs
     # 列出固定的內容
     def list_pinned_content
       begin
-        response = http_post('/pin/ls')
+        response = http_post("/pin/ls")
         data = JSON.parse(response.body)
 
         puts "📌 當前固定的內容:"
-        if data['Keys'] && data['Keys'].any?
-          data['Keys'].each do |hash, info|
+        if data["Keys"] && data["Keys"].any?
+          data["Keys"].each do |hash, info|
             puts "  #{hash} (類型: #{info['Type'] if info})"
           end
         else
@@ -303,7 +303,7 @@ module Ipfs
     end
 
     # 從密碼派生密鑰
-    def derive_key_from_password(password, salt = 'stellar_articles_salt_2024')
+    def derive_key_from_password(password, salt = "stellar_articles_salt_2024")
       OpenSSL::PKCS5.pbkdf2_hmac(
         password,
         salt,
@@ -320,8 +320,8 @@ module Ipfs
 
     # 從 IPFS 獲取內容
     def cat_content(hash)
-      params = { 'arg' => hash }
-      response = http_post('/cat', params)
+      params = { "arg" => hash }
+      response = http_post("/cat", params)
       response.body
     end
 
@@ -346,7 +346,7 @@ module Ipfs
       http.read_timeout = 60
 
       request = Net::HTTP::Post.new(uri)
-      request['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
+      request["Content-Type"] = "multipart/form-data; boundary=#{boundary}"
       request.body = body
 
       response = http.request(request)
@@ -357,7 +357,7 @@ module Ipfs
 
       # 解析回應獲取哈希
       result = JSON.parse(response.body.split("\n").last)
-      result['Hash']
+      result["Hash"]
     end
 
     # HTTP POST 請求（IPFS API 主要使用 POST）

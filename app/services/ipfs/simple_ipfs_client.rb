@@ -1,7 +1,7 @@
 # 簡化版的 IPFS 客戶端
 module Ipfs
   class SimpleIpfsClient
-    def initialize(host = 'localhost', port = 5001)
+    def initialize(host = "localhost", port = 5001)
       @host = host
       @port = port
       @base_url = "http://#{@host}:#{@port}/api/v0"
@@ -13,7 +13,7 @@ module Ipfs
       Net::HTTP.start(uri.host, uri.port, read_timeout: 5, open_timeout: 5) do |http|
         request = Net::HTTP::Post.new(uri)
         response = http.request(request)
-        response.code == '200'
+        response.code == "200"
       end
     rescue
       false
@@ -21,7 +21,7 @@ module Ipfs
 
     # 上傳 JSON 資料到 IPFS
     def add_json(data)
-      Tempfile.create(['ipfs_data', '.json']) do |temp_file|
+      Tempfile.create([ "ipfs_data", ".json" ]) do |temp_file|
         temp_file.write(data.to_json)
         temp_file.close
         add_file(temp_file.path)
@@ -36,7 +36,7 @@ module Ipfs
         request = Net::HTTP::Post.new(uri)
 
         boundary = "----WebKitFormBoundary#{Time.now.to_i}"
-        request['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
+        request["Content-Type"] = "multipart/form-data; boundary=#{boundary}"
 
         file_content = File.read(file_path)
         filename = File.basename(file_path)
@@ -53,7 +53,7 @@ module Ipfs
 
         response = http.request(request)
 
-        if response.code == '200'
+        if response.code == "200"
           JSON.parse(response.body)
         else
           raise "IPFS 上傳失敗: #{response.code} - #{response.body}"
@@ -69,7 +69,7 @@ module Ipfs
         request = Net::HTTP::Post.new(uri)
         response = http.request(request)
 
-        if response.code == '200'
+        if response.code == "200"
           response.body
         else
           raise "IPFS 下載失敗: #{response.code} - #{response.body}"

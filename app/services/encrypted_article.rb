@@ -1,10 +1,10 @@
-require 'openssl'
-require 'base64'
-require 'json'
-require 'digest'
+require "openssl"
+require "base64"
+require "json"
+require "digest"
 
 class EncryptedArticle
-  ALGORITHM = 'AES-256-GCM'
+  ALGORITHM = "AES-256-GCM"
 
   def initialize
     @cipher = OpenSSL::Cipher.new(ALGORITHM)
@@ -48,7 +48,7 @@ class EncryptedArticle
       raise "encrypted_data 必須是 Hash 格式，包含 :encrypted_content, :iv, :auth_tag, :key"
     end
 
-    required_keys = [:encrypted_content, :iv, :auth_tag, :key]
+    required_keys = [ :encrypted_content, :iv, :auth_tag, :key ]
     missing_keys = required_keys - encrypted_data.keys
     unless missing_keys.empty?
       raise "encrypted_data 缺少必要的鍵值: #{missing_keys.join(', ')}"
@@ -103,8 +103,8 @@ class Article
 
   def self.from_json(json_str)
     data = JSON.parse(json_str)
-    article = new(data['title'], data['content'], data['author'], data['tags'])
-    article.created_at = Time.parse(data['created_at']) if data['created_at']
+    article = new(data["title"], data["content"], data["author"], data["tags"])
+    article.created_at = Time.parse(data["created_at"]) if data["created_at"]
     article
   end
 end
@@ -190,7 +190,7 @@ class SecureArticleManager
 
   private
 
-  def derive_key_from_password(password, salt = 'stable_salt_for_demo')
+  def derive_key_from_password(password, salt = "stable_salt_for_demo")
     OpenSSL::PKCS5.pbkdf2_hmac(
       password,
       salt,
