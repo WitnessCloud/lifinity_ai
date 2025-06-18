@@ -1,6 +1,6 @@
 # 主要的加密文章 + IPFS 系統
 module Ipfs
-  class EncryptedArticleIPFS
+  class EncryptedArticleIpfs
     def initialize
       @encryptor = SimpleEncryptedArticle.new
       @ipfs = SimpleIPFSClient.new

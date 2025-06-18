@@ -42,7 +42,7 @@ gem "thruster", require: false
 
 gem 'sprockets', '~> 4.0.0'
 gem 'sprockets-rails', '~> 3.4.2'
-gem "pg"
+# gem "pg"
 gem "devise"
 gem "sassc-rails"
 gem "view_component"
