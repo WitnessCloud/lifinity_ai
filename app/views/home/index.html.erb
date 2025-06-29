@@ -1,98 +1,767 @@
- <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">Web3 - Lifinity</a>
-
-            <!-- 桌面版選單 -->
-            <ul class="nav-menu">
-                <li><a href="#">首頁</a></li>
-                <li><a href="#">關於我</a></li>
-                <li><a href="#">註冊&登入</a></li>
-                <li><a href="#">一般故事</a></li>
-                <li><a href="#">星鏈故事</a></li>
-            </ul>
-
-            <!-- 漢堡選單按鈕 -->
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <!-- 手機版選單 -->
-        <div class="mobile-menu" id="mobileMenu">
-            <ul>
-                <li><a href="#" onclick="closeMenu()">首頁</a></li>
-                <li><a href="#" onclick="closeMenu()">關於我</a></li>
-                <li><a href="#" onclick="closeMenu()">註冊&登入</a></li>
-                <li><a href="#" onclick="closeMenu()">一般故事</a></li>
-                <li><a href="#" onclick="closeMenu()">星鏈故事</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- 主要內容 -->
-    <main class="main-content">
-        <p class="hero-text">一個走遍世界愛與良善的橋樑。</p>
-
-        <h1 class="section-title">你的故事</h1>
-
-        <div class="tabs">
-            <a href="#" class="tab active">全部</a>
-            <a href="#" class="tab">已發布</a>
-            <a href="#" class="tab">草稿</a>
-        </div>
-    </main>
-
-    <script>
-        function toggleMenu() {
-            const hamburger = document.querySelector('.hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
-
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        function closeMenu() {
-            const hamburger = document.querySelector('.hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
-
-            hamburger.classList.remove('active');
-            mobileMenu.classList.remove('active');
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
 
-        // 點擊頁面其他地方關閉選單
-        document.addEventListener('click', function(event) {
-            const hamburger = document.querySelector('.hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
+        /* 導航欄樣式 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-            if (!hamburger.contains(event.target) && !mobileMenu.contains(event.target)) {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #ffd700;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* 手機版選單 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 1rem;
+        }
+
+        .mobile-menu li {
+            margin: 1rem 0;
+        }
+
+        .mobile-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+        }
+
+        /* 主要內容區域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .hero-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        /* 標籤樣式 */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .tab {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .tab:hover, .tab.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 見證列表容器 */
+        .stories-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* 見證卡片 */
+        .story-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .story-card:nth-child(1) { animation-delay: 0.1s; }
+        .story-card:nth-child(2) { animation-delay: 0.2s; }
+        .story-card:nth-child(3) { animation-delay: 0.3s; }
+        .story-card:nth-child(4) { animation-delay: 0.4s; }
+        .story-card:nth-child(5) { animation-delay: 0.5s; }
+        .story-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-        });
+        }
 
-        // 標籤切換功能
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function(e) {
-                e.preventDefault();
+        .story-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
 
-                // 移除所有 active 類別
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        .story-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
 
-                // 添加 active 類別到點擊的標籤
-                this.classList.add('active');
-            });
-        });
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
 
-        // 處理視窗大小變化
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
+        .story-card:hover .story-image img {
+            transform: scale(1.1);
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .story-content {
+            padding: 1.5rem;
+        }
+
+        .story-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .story-excerpt {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            height: 4.8em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .story-date {
+            color: #999;
+        }
+
+        .story-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .story-status.published {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .story-status.draft {
+            background: rgba(255, 193, 7, 0.1);
+            color: #d39e00;
+        }
+
+        .story-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+            text-decoration: none;
+            border: none;
+            font-weight: 500;
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-edit {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #e9ecef;
+        }
+
+        .btn-edit:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+            border: 1px solid rgba(255, 77, 77, 0.2);
+        }
+
+        .btn-delete:hover {
+            background: #ff4d4d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 空狀態 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            color: #333;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        /* 創建見證按鈕 */
+        .create-story-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .create-story-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .mobile-menu.active {
+                display: block;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .stories-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .story-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                margin: 0.25rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stories-container {
+                padding: 1rem;
+            }
+
+            .story-content {
+                padding: 1rem;
+            }
+
+            .create-story-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <!-- 導航欄 -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#" class="logo">Web3 - 雲見證</a>
+                <!-- 桌面版選單 -->
+                <ul class="nav-menu">
+                    <li><a href="#">首頁</a></li>
+                    <li><a href="#">關於我</a></li>
+                    <li><a href="#">註冊&登入</a></li>
+                    <li><a href="#">一般見證</a></li>
+                    <li><a href="#">教會資源典藏</a></li>
+                    <li><a href="#">IPFS上鏈</a></li>
+                </ul>
+                <!-- 漢堡選單按鈕 -->
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <!-- 手機版選單 -->
+            <div class="mobile-menu" id="mobileMenu">
+                <ul>
+                    <li><a href="#" onclick="closeMenu()">首頁</a></li>
+                    <li><a href="#" onclick="closeMenu()">關於我</a></li>
+                    <li><a href="#" onclick="closeMenu()">註冊&登入</a></li>
+                    <li><a href="#" onclick="closeMenu()">一般見證</a></li>
+                    <li><a href="#" onclick="closeMenu()">教會資源典藏</a></li>
+                    <li><a href="#" onclick="closeMenu()">IPFS上鏈</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- 主要內容 -->
+        <main class="main-content">
+            <p class="hero-text">一個走遍世界的橋樑。</p>
+            <h1 class="section-title">發佈 存到永恆的價值</h1>
+
+            <!-- 標籤切換 -->
+            <div class="tabs">
+                <a href="#" class="tab active" data-filter="all">全部</a>
+                <a href="#" class="tab" data-filter="published">已發布</a>
+                <a href="#" class="tab" data-filter="draft">草稿</a>
+            </div>
+
+            <!-- 見證列表容器 -->
+            <div class="stories-container">
+                <!-- 見證網格 -->
+                <div class="stories-grid" id="storiesGrid">
+                    <!-- 見證卡片範例 -->
+                    <div class="story-card" data-status="published">
+                        <div class="story-image">
+                            <div class="placeholder-image">✝️</div>
+                        </div>
+                        <div class="story-content">
+                            <h3 class="story-title">神奇妙的醫治恩典</h3>
+                            <p class="story-excerpt">在我生命最黑暗的時刻，神伸出祂慈愛的手，不僅醫治了我的身體，更更新了我的心靈。這個見證想要分享神在我生命中的奇妙作為...</p>
+                            <div class="story-meta">
+                                <span class="story-date">2024年6月20日</span>
+                                <span class="story-status published">已發布</span>
+                            </div>
+                            <div class="story-actions">
+                                <a href="#" class="btn btn-view">查看</a>
+                                <a href="#" class="btn btn-edit">編輯</a>
+                                <button class="btn btn-delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card" data-status="draft">
+                        <div class="story-image">
+                            <div class="placeholder-image">🙏</div>
+                        </div>
+                        <div class="story-content">
+                            <h3 class="story-title">職場中的信仰見證</h3>
+                            <p class="story-excerpt">在充滿挑戰的職場環境中，如何持守信仰並成為光和鹽。分享我在工作中經歷神恩典的真實故事，以及如何在困難中依靠神的智慧...</p>
+                            <div class="story-meta">
+                                <span class="story-date">2024年6月18日</span>
+                                <span class="story-status draft">草稿</span>
+                            </div>
+                            <div class="story-actions">
+                                <a href="#" class="btn btn-view">預覽</a>
+                                <a href="#" class="btn btn-edit">編輯</a>
+                                <button class="btn btn-delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card" data-status="published">
+                        <div class="story-image">
+                            <div class="placeholder-image">❤️</div>
+                        </div>
+                        <div class="story-content">
+                            <h3 class="story-title">家庭和睦的祝福</h3>
+                            <p class="story-excerpt">原本破碎的家庭關係，在神的愛中得到修復。這是一個關於饒恕、愛與恩典的故事，見證了神如何在家庭中行奇妙的事...</p>
+                            <div class="story-meta">
+                                <span class="story-date">2024年6月15日</span>
+                                <span class="story-status published">已發布</span>
+                            </div>
+                            <div class="story-actions">
+                                <a href="#" class="btn btn-view">查看</a>
+                                <a href="#" class="btn btn-edit">編輯</a>
+                                <button class="btn btn-delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card" data-status="published">
+                        <div class="story-image">
+                            <div class="placeholder-image">🌟</div>
+                        </div>
+                        <div class="story-content">
+                            <h3 class="story-title">宣教路上的感動</h3>
+                            <p class="story-excerpt">遠赴海外宣教的經歷，看見神在不同文化中的作為。分享在異鄉傳福音的挑戰與收穫，以及神如何預備和使用每一個願意的心...</p>
+                            <div class="story-meta">
+                                <span class="story-date">2024年6月12日</span>
+                                <span class="story-status published">已發布</span>
+                            </div>
+                            <div class="story-actions">
+                                <a href="#" class="btn btn-view">查看</a>
+                                <a href="#" class="btn btn-edit">編輯</a>
+                                <button class="btn btn-delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card" data-status="draft">
+                        <div class="story-image">
+                            <div class="placeholder-image">📖</div>
+                        </div>
+                        <div class="story-content">
+                            <h3 class="story-title">讀經心得分享</h3>
+                            <p class="story-excerpt">透過每日讀經，神的話語如何改變我的生命。分享一些深刻感動的經文和從中得到的啟發，希望能鼓勵更多弟兄姊妹...</p>
+                            <div class="story-meta">
+                                <span class="story-date">2024年6月10日</span>
+                                <span class="story-status draft">草稿</span>
+                            </div>
+                            <div class="story-actions">
+                                <a href="#" class="btn btn-view">預覽</a>
+                                <a href="#" class="btn btn-edit">編輯</a>
+                                <button class="btn btn-delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card" data-status="published">
+                        <div class="story-image">
+                            <div class="placeholder-image">🕊️</div>
+                        </div>
+                        <div class="story-content">
+                            <h3 class="story-title">青年團契的美好時光</h3>
+                            <p class="story-excerpt">在青年團契中經歷的成長與感動，弟兄姊妹之間的真誠友誼，以及一起服事神的喜樂。這些美好的回憶成為我信仰路上的寶貴財富...</p>
+                            <div class="story-meta">
+                                <span class="story-date">2024年6月8日</span>
+                                <span class="story-status published">已發布</span>
+                            </div>
+                            <div class="story-actions">
+                                <a href="#" class="btn btn-view">查看</a>
+                                <a href="#" class="btn btn-edit">編輯</a>
+                                <button class="btn btn-delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 空狀態（當沒有見證時顯示） -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📝</div>
+                    <h3>還沒有見證</h3>
+                    <p>開始分享你的第一個見證，讓神的愛透過你的故事觸動更多人的心。</p>
+                    <a href="#" class="btn-primary">創建第一個見證</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- 創建見證浮動按鈕 -->
+        <button class="create-story-btn" onclick="createStory()">+</button>
+
+        <script>
+            // 漢堡選單功能
+            function toggleMenu() {
                 const hamburger = document.querySelector('.hamburger');
                 const mobileMenu = document.getElementById('mobileMenu');
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            }
 
+            function closeMenu() {
+                const hamburger = document.querySelector('.hamburger');
+                const mobileMenu = document.getElementById('mobileMenu');
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
             }
-        });
-    </script>
+
+            // 點擊頁面其他地方關閉選單
+            document.addEventListener('click', function(event) {
+                const hamburger = document.querySelector('.hamburger');
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (!hamburger.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+
+            // 標籤切換功能
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // 移除所有 active 類別
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    // 添加 active 類別到點擊的標籤
+                    this.classList.add('active');
+
+                    // 獲取篩選條件
+                    const filter = this.getAttribute('data-filter');
+                    filterStories(filter);
+                });
+            });
+
+            // 篩選見證功能
+            function filterStories(filter) {
+                const storyCards = document.querySelectorAll('.story-card');
+                const emptyState = document.getElementById('emptyState');
+                let visibleCount = 0;
+
+                storyCards.forEach(card => {
+                    const status = card.getAttribute('data-status');
+
+                    if (filter === 'all' || filter === status) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 顯示或隱藏空狀態
+                if (visibleCount === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                }
+            }
+
+            // 創建見證功能
+            function createStory() {
+                alert('導向到創建見證頁面');
+            }
+
+            // 刪除見證功能
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('確定要刪除這個見證嗎？')) {
+                        const card = this.closest('.story-card');
+                        card.style.animation = 'fadeOut 0.3s ease forwards';
+                        setTimeout(() => {
+                            card.remove();
+                            // 重新檢查是否需要顯示空狀態
+                            const currentFilter = document.querySelector('.tab.active').getAttribute('data-filter');
+                            filterStories(currentFilter);
+                        }, 300);
+                    }
+                });
+            });
+
+            // 淡出動畫
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    to {
+                        opacity: 0;
+                        transform: translateY(-20px) scale(0.9);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // 處理視窗大小變化
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    const hamburger = document.querySelector('.hamburger');
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        </script>

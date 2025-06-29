@@ -50,6 +50,9 @@ gem "dotenv-rails", groups: [ :development, :test ]
 
 gem "ipfs-api"
 
+# https://github.com/q9f/eth.rb
+# gem "eth"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -64,6 +67,18 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  gem 'capistrano', '~> 3.1'
+  # gem 'capistrano-delayed-job', '~> 1.0'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
+  gem 'capistrano-yarn'
+  gem 'capistrano3-puma'
+
+  # rbenv
+  # gem 'capistrano-rbenv', '~> 2.0' # required
+  # gem 'capistrano-rbenv-install', '~> 1.2.0'
 end
 
 group :test do
